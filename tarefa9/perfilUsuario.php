@@ -29,6 +29,12 @@
                 //verifica a senha digitada
                 if (password_verify($senha, $senhaHash)) {
                     $flagLogin = true; //seta variável que indica que usuario logou
+
+                    //salvando dados na session
+                    session_start();
+                    $_SESSION["nome"] = $nome;
+                    $_SESSION["email"] = $email;
+
                 } else {
                     echo "Dados incorretos.";
                     $mostrarBotaoVoltar = true; //seta a variável que sinaliza que vamos mostrar o botão voltar
@@ -60,6 +66,7 @@
     
     <?php if ($flagLogin) { //usuario logado. mostrar informações ?> 
 
+        <!-- dados do usuário para ver e modificar -->
         <form action="register.php" method="post">
             <input type="text" name="nome" id="id-nome" value=<?php echo '"'.$nome.'"' ?>/>
             <input type="text" name="email" id="id-email" value=<?php echo '"'.$email.'"' ?> readonly/>
@@ -71,6 +78,13 @@
     <?php } else { //mostrar botao voltar pois os dados estao incorretos
         echo '<a href="login.php">VOLTAR</a>';
     } ?>
+
+    <!-- botão de fechar sessão caso esteja ativa -->
+    <?php if (session_status() == PHP_SESSION_ACTIVE) { ?>
+        <form action="script/encerrarSessao.php">
+            <button type="submit">Encerrar Sessão</button>
+        </form>
+    <?php } ?>
 
 </body>
 </html>
